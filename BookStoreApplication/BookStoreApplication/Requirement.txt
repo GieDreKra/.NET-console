@@ -1,0 +1,23 @@
+﻿A console application for storing the books:
+A book should have:
+	Title: string
+	Description: string
+	Amount: number
+
+The bookstore should have the following commands:
+Add:
+	Please enter the name:
+	<title>
+	Please enter the description:
+	<description>
+	Please enter the amount:
+	<edition>
+
+List:
+It should output all the info about the books.
+foreach->"title:{title},description: {description}, amount:{amount}"
+
+Additional optional requirements:
+1. only allaw unique names in store
+2. delete all books functionality "Delete Harry Potter"
+3. place the code in github
