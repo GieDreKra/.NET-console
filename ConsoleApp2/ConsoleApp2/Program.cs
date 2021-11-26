@@ -169,3 +169,11 @@ Console.WriteLine("Unikalių kombinacijų yra: " + unique.Count());
 
 //5.Sugeneruokite 10 skaičių masyvą pagal taisyklę: Du pirmi skaičiai- atsitiktiniai nuo 5 iki 25. 
 //    Trečias, pirmo ir antro suma. Ketvirtas- antro ir trečio suma. Penktas trečio ir ketvirto suma ir t.t.
+List<int> numbers1 = new List<int>();
+numbers1.Add(rnd.Next(5,26));
+numbers1.Add(rnd.Next(5,26));
+for(int i = 2; i < 10; i++)
+{
+    numbers1.Add(numbers1[i - 1] + numbers1[i - 2]);
+}
+numbers1.ForEach(n => Console.Write(n + " "));
