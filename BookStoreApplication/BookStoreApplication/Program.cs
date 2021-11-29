@@ -12,12 +12,19 @@ while (true) {
         Console.WriteLine("Please enter the book description:");
         var bookDescription = Console.ReadLine();
         Console.WriteLine("Please enter the amount:");
-        var bookAmount = Convert.ToInt32(Console.ReadLine());
-        var exists=false;
-        foreach (var book in books) { if (book.Title == bookTitle) exists = true; };
-        if (!exists)
-            books.Add(new Book(bookTitle, bookDescription, bookAmount));
-        else Console.WriteLine("Book title already exists.");
+        try
+        {
+            var bookAmount = Convert.ToInt32(Console.ReadLine());
+            var exists = false;
+            foreach (var book in books) { if (book.Title == bookTitle) exists = true; };
+            if (!exists)
+                books.Add(new Book(bookTitle, bookDescription, bookAmount));
+            else Console.WriteLine("Book title already exists.");
+        }
+        catch
+        {
+            Console.WriteLine("Amount must be a number..");
+        }
     }
     if (command == "List")
     {
@@ -25,8 +32,7 @@ while (true) {
     }
     if (command.Contains("Delete"))   {       
         string bookName = command.Split("Delete ", StringSplitOptions.None).Last();
-        Console.WriteLine(bookName);
-        try
+         try
         {
             var item = books.Single(x => x.Title.Equals(bookName));
             books.Remove(item);
@@ -43,12 +49,26 @@ while (true) {
         }
         else
         {
-            Console.WriteLine("Write new book name:");
+            Console.WriteLine("Write new book TITLE or leave empty (if no update need):");
             var bookName2 = Console.ReadLine();
-            books.Where(x => x.Title == bookName).ToList().ForEach(y => y.Title = bookName2);
+            if (bookName2.Count() != 0) {
+                books.Where(x => x.Title == bookName).ToList().ForEach(y => y.Title = bookName2);
+                bookName=bookName2;
+            }
+            Console.WriteLine("Write new DESCRIPTION or leave empty (if no update need):");
+            var bookName3 = Console.ReadLine();
+            if (bookName3.Count() != 0)
+                books.Where(x => x.Title == bookName).ToList().ForEach(y => y.Description = bookName3);
+            Console.WriteLine("Write new AMOUNT or leave empty (if no update need):");
+            try
+            {
+                var bookName4 = Console.ReadLine();
+                if (bookName4.Count() != 0)
+                    books.Where(x => x.Title == bookName).ToList().ForEach(y => y.Amount = Convert.ToInt32(bookName4));
+            }
+            catch { Console.WriteLine("Amount must be a number.."); }
+
         }
 
     }
-
-
 }
