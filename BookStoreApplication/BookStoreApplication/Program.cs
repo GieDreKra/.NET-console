@@ -4,7 +4,7 @@ using BookStoreApplication.Models;
 Console.WriteLine("Welcome to Bookstore!");
 var books=new List<Book>();
 while (true) {
-    Console.WriteLine("Please enter one command 'Add','List','Delete BookName'");
+    Console.WriteLine("Please enter one command 'Add','List','Delete BookName','Update BookName'");
     var command = Console.ReadLine();
     if (command == "Add") {
         Console.WriteLine("Please enter the book tite:");
@@ -24,15 +24,31 @@ while (true) {
         foreach (var book in books) { Console.WriteLine($"title:{book.Title},description: {book.Description}, amount:{book.Amount}"); };
     }
     if (command.Contains("Delete"))   {       
-        string bookName = command.Split(new string[] { "Delete " }, StringSplitOptions.None).Last();
+        string bookName = command.Split("Delete ", StringSplitOptions.None).Last();
+        Console.WriteLine(bookName);
         try
         {
-            var item = books.Single(x => x.Title.Contains(bookName));
+            var item = books.Single(x => x.Title.Equals(bookName));
             books.Remove(item);
         }
         catch { Console.WriteLine("No title ...");  }
 
     }
-    
+    if (command.Contains("Update"))
+    {
+        string bookName = command.Split("Update ", StringSplitOptions.None).Last();
+        if (books.Where(x => x.Title == bookName).Count() == 0)
+        {
+            Console.WriteLine("No title to update ...");
+        }
+        else
+        {
+            Console.WriteLine("Write new book name:");
+            var bookName2 = Console.ReadLine();
+            books.Where(x => x.Title == bookName).ToList().ForEach(y => y.Title = bookName2);
+        }
+
+    }
+
 
 }
