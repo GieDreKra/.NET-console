@@ -49,8 +49,8 @@ namespace StudentsGrades
             st = Students.Find(x => x.Id == id);
             if (st is not null)
             {
-                var avgM = st.Grades.Math.Average();
-                var avgB = st.Grades.Biology.Average();
+                var avgM = Math.Round(st.Grades.Math.Average(), 2);
+                var avgB = Math.Round(st.Grades.Biology.Average(), 2);
                 var info = StudentInfoPrint(st) + $", Math average: {avgM}, Biology average: {avgB}\n";
                 return info;
             }
@@ -93,8 +93,15 @@ namespace StudentsGrades
                 return "Students list is not correct..";
             }
             av = Math.Round(av, 2);
-            var info = StudentInfoPrint(stMax) + $", average {subject} is: {av}";
-            return info;
+            if (av > 0)
+            {
+                var info = StudentInfoPrint(stMax) + $", average {subject} is: {av}";
+                return info;
+            }
+            else
+            {
+                return "No students found ..";
+            }
         }
 
         public string Find(List<string> studentList, string subject, int classGrade)
@@ -133,8 +140,15 @@ namespace StudentsGrades
                 return "Students list is not correct..";
             }
             av = Math.Round(av, 2);
-            var info = StudentInfoPrint(stMax) + $", average {subject} in class {classGrade} is: {av}";
-            return info;
+            if (av > 0)
+            {
+                var info = StudentInfoPrint(stMax) + $", average {subject} in class {classGrade} is: {av}";
+                return info;
+            }
+            else
+            {
+                return "No students found ..";
+            }
         }
 
         public string Find(List<string> studentList)
@@ -162,8 +176,15 @@ namespace StudentsGrades
                 return "Students list is not correct..";
             }
             av = Math.Round(av / 2, 2);
-            var info = StudentInfoPrint(stMax) + $", average best in Math and Biology is: {av}";
-            return info;
+            if (av > 0)
+            {
+                var info = StudentInfoPrint(stMax) + $", average best in Math and Biology is: {av}";
+                return info;
+            }
+            else
+            {
+                return "No students found ..";
+            }
         }
 
         public string Find(List<string> studentList, int classGrade)
@@ -191,8 +212,15 @@ namespace StudentsGrades
                 return "Students list is not correct..";
             }
             av = Math.Round(av / 2, 2);
-            var info = StudentInfoPrint(stMax) + $", average best in class {classGrade} in Math and Biology is: {av}";
-            return info;
+            if (av > 0)
+            {
+                var info = StudentInfoPrint(stMax) + $", average best in class {classGrade} in Math and Biology is: {av}";
+                return info;
+            }
+            else
+            {
+                return "No students found ..";
+            }
         }
 
         public string RemoveStudent(int id)
