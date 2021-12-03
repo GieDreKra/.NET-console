@@ -8,7 +8,6 @@ namespace StudentsGrades
 {
     public class StudentsGrades
     {
-
         private List<Student> Students = new List<Student>()
         {
             new Student() {
@@ -16,7 +15,6 @@ namespace StudentsGrades
                 Name = "Jonas",
                 Surname = "Jonaitis",
                 ClassGrade = 5
-
                 },
              new Student() {
                 Id = Student.IdCounter++,
@@ -28,6 +26,12 @@ namespace StudentsGrades
                 Id = Student.IdCounter++,
                 Name = "Testas",
                 Surname = "Testauskas",
+                ClassGrade = 10
+             },
+                new Student() {
+                Id = Student.IdCounter++,
+                Name = "Testas2",
+                Surname = "Testauskas2",
                 ClassGrade = 10
              }
         };
@@ -59,49 +63,48 @@ namespace StudentsGrades
 
         public string Find(List<string> studentList, string subject)
         {
-            double av = 0;
-            Student stMax = new Student();
             try
             {
-                for (int i = 0; i < studentList.Count; i++)
+                List<Student> studentsOrder = new List<Student>();
+                if (subject == "Math")
                 {
-                    var st = new Student();
-                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
-                    if (st is not null)
+                    studentsOrder = Students.OrderByDescending(x => x.Grades.Math.Average()).ToList();
+                    foreach (var student in studentsOrder)
                     {
-                        if (subject == "Math")
+                        foreach (var id in studentList)
                         {
-                            if (st.Grades.Math.Average() > av)
+                            if (student.Id == Convert.ToInt32(id))
                             {
-                                av = st.Grades.Math.Average();
-                                stMax = st;
-                            }
-                        }
-                        if (subject == "Biology")
+                                return StudentInfoPrint(student) + $", average {subject} is: {Math.Round(student.Grades.Math.Average(), 2)}";
+
+                            };
+                        };
+                    };
+                }
+                else if (subject == "Biology")
+                {
+                    studentsOrder = Students.OrderByDescending(x => x.Grades.Biology.Average()).ToList();
+                    foreach (var student in studentsOrder)
+                    {
+                        foreach (var id in studentList)
                         {
-                            if (st.Grades.Biology.Average() > av)
+                            if (student.Id == Convert.ToInt32(id))
                             {
-                                av = st.Grades.Biology.Average();
-                                stMax = st;
-                            }
-                        }
-                    }
+                                return StudentInfoPrint(student) + $", average {subject} is: {Math.Round(student.Grades.Biology.Average(), 2)}";
+                            };
+                        };
+                    };
+                }
+                else
+                {
+                    return "No subject found ..";
                 }
             }
             catch (Exception ex)
             {
                 return "Students list is not correct..";
             }
-            av = Math.Round(av, 2);
-            if (av > 0)
-            {
-                var info = StudentInfoPrint(stMax) + $", average {subject} is: {av}";
-                return info;
-            }
-            else
-            {
-                return "No students found ..";
-            }
+            return "No students found ..";
         }
 
         public string Find(List<string> studentList, string subject, int classGrade)
@@ -153,74 +156,54 @@ namespace StudentsGrades
 
         public string Find(List<string> studentList)
         {
-            double av = 0;
-            Student stMax = new Student();
+            List<Student> studentsOrder = new List<Student>();
             try
             {
-                for (int i = 0; i < studentList.Count; i++)
+                studentsOrder = Students.OrderByDescending(x => (x.Grades.Math.Average() + x.Grades.Biology.Average())).ToList();
+                foreach (var student in studentsOrder)
                 {
-                    var st = new Student();
-                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
-                    if (st is not null)
+                    foreach (var id in studentList)
                     {
-                        if ((st.Grades.Math.Average() + st.Grades.Biology.Average()) > av)
+                        if (student.Id == Convert.ToInt32(id))
                         {
-                            av = st.Grades.Math.Average() + st.Grades.Biology.Average();
-                            stMax = st;
-                        }
-                    }
-                }
+                            var info = StudentInfoPrint(student) + $", average best in Math and Biology is: " +
+                                $"{Math.Round(((student.Grades.Math.Average() + student.Grades.Biology.Average()) / 2), 2)}";
+                            return info;
+                        };
+                    };
+                };
             }
-            catch (Exception ex)
+            catch
             {
                 return "Students list is not correct..";
             }
-            av = Math.Round(av / 2, 2);
-            if (av > 0)
-            {
-                var info = StudentInfoPrint(stMax) + $", average best in Math and Biology is: {av}";
-                return info;
-            }
-            else
-            {
-                return "No students found ..";
-            }
+            return "No students found ..";
         }
 
         public string Find(List<string> studentList, int classGrade)
         {
-            double av = 0;
-            Student stMax = new Student();
+            List<Student> studentsOrder = new List<Student>();
             try
             {
-                for (int i = 0; i < studentList.Count; i++)
+                studentsOrder = Students.OrderByDescending(x => (x.Grades.Math.Average() + x.Grades.Biology.Average())).Where(y => y.ClassGrade == classGrade).ToList();
+                foreach (var student in studentsOrder)
                 {
-                    var st = new Student();
-                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
-                    if (st is not null)
+                    foreach (var id in studentList)
                     {
-                        if ((st.Grades.Math.Average() + st.Grades.Biology.Average()) > av && (st.ClassGrade.Equals(classGrade)))
+                        if (student.Id == Convert.ToInt32(id))
                         {
-                            av = st.Grades.Math.Average() + st.Grades.Biology.Average();
-                            stMax = st;
-                        }
-                    }
-                }
+                            var info = StudentInfoPrint(student) + $", average best in class {classGrade} in Math and Biology is: " +
+                                $"{Math.Round(((student.Grades.Math.Average() + student.Grades.Biology.Average()) / 2), 2)}";
+                            return info;
+                        };
+                    };
+                };
             }
-            catch (Exception ex)
+            catch
             {
                 return "Students list is not correct..";
             }
-            av = Math.Round(av / 2, 2);
-            if (av > 0)
-            {
-                var info = StudentInfoPrint(stMax) + $", average best in class {classGrade} in Math and Biology is: {av}";
-                return info;
-            }
-            else
-            {
-                return "No students found ..";
-            }
+            return "No students found ..";
         }
 
         public string RemoveStudent(int id)

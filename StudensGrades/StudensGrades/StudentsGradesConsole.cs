@@ -38,15 +38,22 @@ namespace StudentsGrades
                 var classGrade = Convert.ToInt32(command.Split(' ').Last());
                 var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
                 var studentList = list.Split(',').ToList();
-                var info = _studentsGrades.Find(studentList,classGrade);
+                var info = _studentsGrades.Find(studentList, classGrade);
                 Console.WriteLine(info);
             }
             catch
             {
-                var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
-                var studentList = list.Split(',').ToList();
-                var info = _studentsGrades.Find(studentList);
-                Console.WriteLine(info);
+                try
+                {
+                    var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
+                    var studentList = list.Split(',').ToList();
+                    var info = _studentsGrades.Find(studentList);
+                    Console.WriteLine(info);
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter valid students list example {0,1,2 ...}");
+                }
             }
         }
 
@@ -69,6 +76,7 @@ namespace StudentsGrades
                     var subject = command.Split(' ').Last();
                     var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
                     var studentList = list.Split(',').ToList();
+                    Console.WriteLine(list);
                     var info = _studentsGrades.Find(studentList, subject);
                     Console.WriteLine(info);
                 }
