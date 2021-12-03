@@ -23,7 +23,13 @@ namespace StudentsGrades
                 Name = "Petras",
                 Surname = "Petraitis",
                 ClassGrade = 10
-                }
+                },
+             new Student() {
+                Id = Student.IdCounter++,
+                Name = "Testas",
+                Surname = "Testauskas",
+                ClassGrade = 10
+             }
         };
 
         public string GetStudentsInfo()
@@ -70,7 +76,6 @@ namespace StudentsGrades
                                 av = st.Grades.Math.Average();
                                 stMax = st;
                             }
-
                         }
                         if (subject == "Biology")
                         {
@@ -80,7 +85,6 @@ namespace StudentsGrades
                                 stMax = st;
                             }
                         }
-
                     }
                 }
             }
@@ -90,6 +94,104 @@ namespace StudentsGrades
             }
             av = Math.Round(av, 2);
             var info = StudentInfoPrint(stMax) + $", average {subject} is: {av}";
+            return info;
+        }
+
+        public string Find(List<string> studentList, string subject, int classGrade)
+        {
+            double av = 0;
+            Student stMax = new Student();
+            try
+            {
+                for (int i = 0; i < studentList.Count; i++)
+                {
+                    var st = new Student();
+                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
+                    if (st is not null)
+                    {
+                        if (subject == "Math" && st.ClassGrade.Equals(classGrade))
+                        {
+                            if (st.Grades.Math.Average() > av)
+                            {
+                                av = st.Grades.Math.Average();
+                                stMax = st;
+                            }
+                        }
+                        if (subject == "Biology" && st.ClassGrade.Equals(classGrade))
+                        {
+                            if (st.Grades.Biology.Average() > av)
+                            {
+                                av = st.Grades.Biology.Average();
+                                stMax = st;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Students list is not correct..";
+            }
+            av = Math.Round(av, 2);
+            var info = StudentInfoPrint(stMax) + $", average {subject} in class {classGrade} is: {av}";
+            return info;
+        }
+
+        public string Find(List<string> studentList)
+        {
+            double av = 0;
+            Student stMax = new Student();
+            try
+            {
+                for (int i = 0; i < studentList.Count; i++)
+                {
+                    var st = new Student();
+                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
+                    if (st is not null)
+                    {
+                        if ((st.Grades.Math.Average() + st.Grades.Biology.Average()) > av)
+                        {
+                            av = st.Grades.Math.Average() + st.Grades.Biology.Average();
+                            stMax = st;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Students list is not correct..";
+            }
+            av = Math.Round(av / 2, 2);
+            var info = StudentInfoPrint(stMax) + $", average best in Math and Biology is: {av}";
+            return info;
+        }
+
+        public string Find(List<string> studentList, int classGrade)
+        {
+            double av = 0;
+            Student stMax = new Student();
+            try
+            {
+                for (int i = 0; i < studentList.Count; i++)
+                {
+                    var st = new Student();
+                    st = Students.Find(x => x.Id == Convert.ToInt32(studentList[i]));
+                    if (st is not null)
+                    {
+                        if ((st.Grades.Math.Average() + st.Grades.Biology.Average()) > av && (st.ClassGrade.Equals(classGrade)))
+                        {
+                            av = st.Grades.Math.Average() + st.Grades.Biology.Average();
+                            stMax = st;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Students list is not correct..";
+            }
+            av = Math.Round(av / 2, 2);
+            var info = StudentInfoPrint(stMax) + $", average best in class {classGrade} in Math and Biology is: {av}";
             return info;
         }
 

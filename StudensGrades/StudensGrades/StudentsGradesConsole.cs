@@ -10,7 +10,6 @@ namespace StudentsGrades
     {
         private StudentsGrades _studentsGrades = new StudentsGrades();
 
-
         public void ExecuteAdd()
         {
             Console.WriteLine("Please enter Student Name:");
@@ -32,13 +31,52 @@ namespace StudentsGrades
 
         }
 
-        public void ExecuteFind(string command)
+        public void ExecuteBestAverageAll(string command)
         {
-            var subject = command.Split(' ').Last();
-            var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
-            var studentList = list.Split(',').ToList();
-            var info = _studentsGrades.Find(studentList, subject);
-            Console.WriteLine(info);
+            try
+            {
+                var classGrade = Convert.ToInt32(command.Split(' ').Last());
+                var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
+                var studentList = list.Split(',').ToList();
+                var info = _studentsGrades.Find(studentList,classGrade);
+                Console.WriteLine(info);
+            }
+            catch
+            {
+                var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
+                var studentList = list.Split(',').ToList();
+                var info = _studentsGrades.Find(studentList);
+                Console.WriteLine(info);
+            }
+        }
+
+        public void ExecuteBestAverageIn(string command)
+        {
+            try
+            {
+                var commandList = command.Split(' ').ToList();
+                var classGrade = Convert.ToInt32(commandList[3]);
+                var subject = commandList[2];
+                var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
+                var studentList = list.Split(',').ToList();
+                var info = _studentsGrades.Find(studentList, subject, classGrade);
+                Console.WriteLine(info);
+            }
+            catch
+            {
+                try
+                {
+                    var subject = command.Split(' ').Last();
+                    var list = command.Split(new string[] { "{" }, StringSplitOptions.None)[1].Split('}')[0].Trim();
+                    var studentList = list.Split(',').ToList();
+                    var info = _studentsGrades.Find(studentList, subject);
+                    Console.WriteLine(info);
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter valid students list example {0,1,2 ...}");
+                }
+            }
         }
 
         public void ExecuteRemove()

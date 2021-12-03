@@ -6,7 +6,9 @@ Console.WriteLine("Hello, World!");
 var studentsGradesConsole = new StudentsGradesConsole();
 while (true)
 {
-    Console.WriteLine("Please select command 'Add', 'List', 'Select', 'Remove', 'Find {Students ID list} Subject' ");
+    Console.WriteLine("Please select command 'Add', 'List', 'Select', 'Remove',");
+    Console.WriteLine("'BestAverageIn {Students ID list} Subject Class', 'BestAverageAll {Students ID list} Class'");
+
     var command = Console.ReadLine();
     if (command == "Add")
     {
@@ -24,9 +26,12 @@ while (true)
     {
         studentsGradesConsole.ExecuteRemove();
     }
-    if (command.Contains("Find"))
+    if (command.Contains("BestAverageIn"))
     {
-        studentsGradesConsole.ExecuteFind(command);
+        studentsGradesConsole.ExecuteBestAverageIn(command);
     }
-
+    if (command.Contains("BestAverageAll"))
+    {
+        studentsGradesConsole.ExecuteBestAverageAll(command);
+    }
 }
